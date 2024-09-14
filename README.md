@@ -24,10 +24,10 @@ Simple system for managing courses, lessons and reviews.
 
 ### Review managing
 
-- Students can create public or private reviews for a course
+- Students can create public or private reviews for a lesson
 - Students can delete their reviews
-- Lecturers can view all reviews for their course
-- Guests, Users and other Students can see public reviews for a course
+- Lecturers can view all reviews for their lessons
+- Guests, Users and other Students can see public reviews for a lesson
 - Administrators can delete reviews
 
 ## Used technologies

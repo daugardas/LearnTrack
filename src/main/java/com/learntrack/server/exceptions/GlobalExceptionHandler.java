@@ -1,21 +1,35 @@
 package com.learntrack.server.exceptions;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import java.util.Map;
-import java.util.HashMap;
-
 @ControllerAdvice
 public class GlobalExceptionHandler {
     Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(
+            HttpMessageNotReadableException ex) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", "Required request body is missing or unreadable");
+
+        logger.info("Http message not readable error: {}", errors);
+
+        return ResponseEntity.badRequest().body(errors);
+    }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -48,6 +62,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(errors);
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors()
@@ -56,5 +72,16 @@ public class GlobalExceptionHandler {
         logger.info("Validation error: {}", errors);
 
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(TransactionSystemException.class)
+    public ResponseEntity<Map<String, String>> handleTransactionSystemException(TransactionSystemException ex) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", "Invalid input");
+
+        logger.info("Transaction system error: {}", errors);
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errors);
     }
 }

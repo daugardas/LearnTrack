@@ -1,10 +1,11 @@
 package com.learntrack.server.services;
 
-import com.learntrack.server.models.Course;
-import com.learntrack.server.repositories.CourseRepository;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import com.learntrack.server.models.Course;
+import com.learntrack.server.repositories.CourseRepository;
 
 @Service
 public class CourseService {

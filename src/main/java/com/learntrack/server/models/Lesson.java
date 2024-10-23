@@ -2,7 +2,7 @@ package com.learntrack.server.models;
 
 import java.util.List;
 
-import com.learntrack.server.dto.LessonDTO;
+import com.learntrack.server.dto.LessonRequestDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -46,12 +46,12 @@ public class Lesson {
         this.course = course;
     }
 
-    public Lesson(LessonDTO lessonDTO) {
+    public Lesson(LessonRequestDTO lessonDTO) {
         this.title = lessonDTO.getTitle();
         this.description = lessonDTO.getDescription();
     }
 
-    public Lesson(LessonDTO lessonDTO, Course course) {
+    public Lesson(LessonRequestDTO lessonDTO, Course course) {
         this.title = lessonDTO.getTitle();
         this.description = lessonDTO.getDescription();
         this.course = course;

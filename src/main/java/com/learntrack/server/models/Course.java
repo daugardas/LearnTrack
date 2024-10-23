@@ -2,7 +2,7 @@ package com.learntrack.server.models;
 
 import java.util.List;
 
-import com.learntrack.server.dto.CourseDTO;
+import com.learntrack.server.dto.CourseRequestDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -33,7 +33,7 @@ public class Course {
         this.description = description;
     }
 
-    public Course(CourseDTO courseDTO) {
+    public Course(CourseRequestDTO courseDTO) {
         this.name = courseDTO.getName();
         this.description = courseDTO.getDescription();
     }

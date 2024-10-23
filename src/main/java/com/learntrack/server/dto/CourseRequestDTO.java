@@ -2,15 +2,15 @@ package com.learntrack.server.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class CourseDTO {
+public class CourseRequestDTO {
     @NotBlank(message = "Name is mandatory")
     private String name;
     private String description;
 
-    public CourseDTO() {
+    public CourseRequestDTO() {
     }
 
-    public CourseDTO(String name, String description) {
+    public CourseRequestDTO(String name, String description) {
         this.name = name;
         this.description = description;
     }

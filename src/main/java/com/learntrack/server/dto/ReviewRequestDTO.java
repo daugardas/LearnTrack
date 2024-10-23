@@ -2,16 +2,16 @@ package com.learntrack.server.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class ReviewDTO {
+public class ReviewRequestDTO {
     @NotBlank
     private String title;
     @NotBlank
     private String content;
 
-    public ReviewDTO() {
+    public ReviewRequestDTO() {
     }
 
-    public ReviewDTO(String title, String content) {
+    public ReviewRequestDTO(String title, String content) {
         this.title = title;
         this.content = content;
     }

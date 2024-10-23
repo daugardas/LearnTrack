@@ -1,6 +1,6 @@
 package com.learntrack.server.models;
 
-import com.learntrack.server.dto.ReviewDTO;
+import com.learntrack.server.dto.ReviewRequestDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,12 +38,12 @@ public class Review {
         this.lesson = lesson;
     }
 
-    public Review(ReviewDTO reviewDTO) {
+    public Review(ReviewRequestDTO reviewDTO) {
         this.title = reviewDTO.getTitle();
         this.content = reviewDTO.getContent();
     }
 
-    public Review(ReviewDTO reviewDTO, Lesson lesson) {
+    public Review(ReviewRequestDTO reviewDTO, Lesson lesson) {
         this.title = reviewDTO.getTitle();
         this.content = reviewDTO.getContent();
         this.lesson = lesson;

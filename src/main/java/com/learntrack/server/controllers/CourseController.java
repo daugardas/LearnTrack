@@ -1,6 +1,7 @@
 package com.learntrack.server.controllers;
 
 import com.learntrack.server.dto.CourseDTO;
+import com.learntrack.server.exceptions.ResourceNotFoundException;
 import com.learntrack.server.models.Course;
 import com.learntrack.server.services.CourseService;
 
@@ -51,7 +52,7 @@ public class CourseController {
         })
         @GetMapping
         public ResponseEntity<Iterable<Course>> findAll() {
-                logger.debug("Finding all courses");
+                logger.info("Finding all courses");
                 Iterable<Course> courses = courseService.findAll();
                 return ResponseEntity.ok(courses);
         }
@@ -67,14 +68,15 @@ public class CourseController {
         @GetMapping("/{requestedId}")
         public ResponseEntity<Course> findById(
                         @Parameter(description = "id of a course to be searched") @PathVariable Long requestedId) {
-                logger.debug("Finding course with id: {}", requestedId);
+                logger.info("Finding course with id: {}", requestedId);
                 Optional<Course> courseOptional = courseService.findById(requestedId);
-                if (courseOptional.isPresent()) {
-                        logger.debug("Course found: {}", courseOptional.get());
-                        return ResponseEntity.ok(courseOptional.get());
+                if (!courseOptional.isPresent()) {
+                        logger.info("Course not found");
+                        throw new ResourceNotFoundException("Course with id " + requestedId + " not found");
                 }
-                logger.debug("Course not found");
-                return ResponseEntity.notFound().build();
+
+                logger.info("Course found: {}", courseOptional.get());
+                return ResponseEntity.ok(courseOptional.get());
         }
 
         @Operation(summary = "Create a new course")
@@ -112,12 +114,12 @@ public class CourseController {
         public ResponseEntity<Course> updateById(
                         @Parameter(description = "id of a course to be updated") @PathVariable Long requestedId,
                         @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Course to update", content = @Content(mediaType = org.springframework.http.MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CourseDTO.class))) @Valid @RequestBody CourseDTO course) {
-                logger.debug("Updating course with id: {}", requestedId);
+                logger.info("Updating course with id: {}", requestedId);
 
                 Optional<Course> courseOptional = courseService.findById(requestedId);
                 if (!courseOptional.isPresent()) {
-                        logger.debug("Course not found");
-                        return ResponseEntity.notFound().build();
+                        logger.info("Course not found");
+                        throw new ResourceNotFoundException("Course with id " + requestedId + " not found");
                 }
 
                 Course courseToUpdate = courseOptional.get();
@@ -135,13 +137,14 @@ public class CourseController {
         @DeleteMapping("/{requestedId}")
         public ResponseEntity<Void> deleteById(
                         @Parameter(description = "id of a course to be deleted") @PathVariable Long requestedId) {
-                logger.debug("Deleting course with id: {}", requestedId);
-                if (courseService.existsById(requestedId)) {
-                        courseService.deleteById(requestedId);
-                        return ResponseEntity.noContent().build();
+                logger.info("Deleting course with id: {}", requestedId);
+                if (!courseService.existsById(requestedId)) {
+                        logger.info("Course not found");
+                        throw new ResourceNotFoundException("Course with id " + requestedId + " not found");
                 }
-                logger.debug("Course not found");
-                return ResponseEntity.notFound().build();
+
+                courseService.deleteById(requestedId);
+                return ResponseEntity.noContent().build();
         }
 
         @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -151,7 +154,7 @@ public class CourseController {
                 ex.getBindingResult().getFieldErrors()
                                 .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
 
-                logger.error("Course is invalid: {}", errors);
+                logger.info("Course is invalid: {}", errors);
 
                 return errors;
         }

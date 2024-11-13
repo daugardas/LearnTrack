@@ -19,7 +19,7 @@ Simple system for managing courses, lessons and reviews.
 - Lecturers can create lessons for a course
 - Lecturers can edit lessons
 - Lecturers can delete lessons
-- Lectureres can add lesson content (text, videos)
+- Lecturers can add lesson content (text, videos)
 - Administrators can remove lessons
 
 ### Review managing

@@ -1,11 +1,10 @@
 package com.learntrack.resourceserver.services;
 
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
 import com.learntrack.resourceserver.models.Lesson;
 import com.learntrack.resourceserver.repositories.LessonRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class LessonService {

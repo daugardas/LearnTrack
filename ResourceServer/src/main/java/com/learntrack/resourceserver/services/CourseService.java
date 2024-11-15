@@ -1,11 +1,10 @@
 package com.learntrack.resourceserver.services;
 
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
 import com.learntrack.resourceserver.models.Course;
 import com.learntrack.resourceserver.repositories.CourseRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class CourseService {
@@ -33,5 +32,9 @@ public class CourseService {
 
     public boolean existsById(Long id) {
         return courseRepository.existsById(id);
+    }
+
+    public Optional<Course> findByIdAndOwnerId(Long id, Long ownerId) {
+        return courseRepository.findByIdAndOwnerId(id, ownerId);
     }
 }

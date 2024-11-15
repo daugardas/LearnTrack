@@ -1,11 +1,11 @@
 package com.learntrack.resourceserver.converters;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.learntrack.resourceserver.dto.CourseRequestDTO;
 import com.learntrack.resourceserver.dto.CourseResponseDTO;
 import com.learntrack.resourceserver.models.Course;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CourseConverter {
     public static CourseResponseDTO convertToCourseResponseDTO(Course course) {

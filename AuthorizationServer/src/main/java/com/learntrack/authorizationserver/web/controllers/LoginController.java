@@ -1,4 +1,4 @@
-package com.learntrack.authorizationserver.web;
+package com.learntrack.authorizationserver.web.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

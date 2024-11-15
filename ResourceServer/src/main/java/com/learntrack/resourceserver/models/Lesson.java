@@ -1,24 +1,19 @@
 package com.learntrack.resourceserver.models;
 
-import java.util.List;
-
 import com.learntrack.resourceserver.dto.LessonRequestDTO;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+
+import java.util.List;
 
 @Entity
 public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
+
+    @Column(name = "owner_id", nullable = false)
+    private Long ownerId;
 
     @NotBlank
     private String title;
@@ -35,26 +30,30 @@ public class Lesson {
     public Lesson() {
     }
 
-    public Lesson(String title, String description) {
+    public Lesson(String title, String description, Long ownerId) {
         this.title = title;
         this.description = description;
+        this.ownerId = ownerId;
     }
 
-    public Lesson(String title, String description, Course course) {
+    public Lesson(String title, String description, Course course, Long ownerId) {
         this.title = title;
         this.description = description;
         this.course = course;
+        this.ownerId = ownerId;
     }
 
-    public Lesson(LessonRequestDTO lessonDTO) {
+    public Lesson(LessonRequestDTO lessonDTO, Long ownerId) {
         this.title = lessonDTO.getTitle();
         this.description = lessonDTO.getDescription();
+        this.ownerId = ownerId;
     }
 
-    public Lesson(LessonRequestDTO lessonDTO, Course course) {
+    public Lesson(LessonRequestDTO lessonDTO, Course course, Long ownerId) {
         this.title = lessonDTO.getTitle();
         this.description = lessonDTO.getDescription();
         this.course = course;
+        this.ownerId = ownerId;
     }
 
     public Long getId() {
@@ -63,6 +62,14 @@ public class Lesson {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
     public String getTitle() {

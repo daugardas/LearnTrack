@@ -1,11 +1,11 @@
 package com.learntrack.resourceserver.converters;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.learntrack.resourceserver.dto.LessonRequestDTO;
 import com.learntrack.resourceserver.dto.LessonResponseDTO;
 import com.learntrack.resourceserver.models.Lesson;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LessonConverter {
     public static LessonResponseDTO convertToLessonResponseDTO(Lesson lesson) {

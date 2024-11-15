@@ -1,4 +1,4 @@
-package com.learntrack.authorizationserver.web;
+package com.learntrack.authorizationserver.web.controllers;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;

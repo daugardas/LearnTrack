@@ -11,4 +11,8 @@ import lombok.NoArgsConstructor;
 public class UserUpdateRequestDTO {
     @NotBlank
     private String username;
+
+    public String getUsername() {
+        return username;
+    }
 }

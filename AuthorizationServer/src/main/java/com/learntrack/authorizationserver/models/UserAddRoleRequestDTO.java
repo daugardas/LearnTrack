@@ -9,4 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserAddRoleRequestDTO {
     private Long roleId;
+
+    public Long getRoleId() {
+        return roleId;
+    }
 }

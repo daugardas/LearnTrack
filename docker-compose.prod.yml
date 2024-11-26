@@ -1,0 +1,51 @@
+services:
+  nginx-reverse-proxy:
+    ports:
+      - 80:80
+      - 443:443
+    restart: always
+  
+  auth-server:
+    build:
+      target: production
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
+
+  auth-server-db:
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - /persistent/storage/auth-server-db-data:/var/lib/postgresql/data
+
+  resource-server:
+    build:
+      target: production
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
+
+  resource-server-db:
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - /persistent/storage/resource-server-db-data:/var/lib/postgresql/data
+
+  client-server:
+    build:
+      target: production
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+  

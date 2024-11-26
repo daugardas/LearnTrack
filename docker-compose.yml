@@ -1,0 +1,76 @@
+services:
+  nginx-reverse-proxy:
+    image: nginx:latest
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/certs:/etc/nginx/certs
+    depends_on:
+      - auth-server
+      - resource-server
+  
+  auth-server:
+    build:
+      context: ./AuthorizationServer
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      auth-server-db:
+        condition: service_healthy
+
+
+  auth-server-db:
+    image: postgres:latest
+    environment:
+      - 'POSTGRES_DB=auth-db'
+      - 'POSTGRES_PASSWORD=secret'
+      - 'POSTGRES_USER=myuser'
+    volumes:
+      - auth-server-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myuser -d auth-db"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  resource-server:
+    build:
+      context: ./ResourceServer
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      resource-server-db:
+        condition: service_healthy
+
+  resource-server-db:
+    image: postgres:latest
+    environment:
+      - 'POSTGRES_DB=resource-db'
+      - 'POSTGRES_PASSWORD=secret'
+      - 'POSTGRES_USER=myuser'
+    volumes:
+      - resource-server-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myuser -d resource-db"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  client-server:
+    build:
+      context: ./ClientServer
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      - auth-server
+      - resource-server
+
+
+volumes:
+  auth-server-db-data:
+  resource-server-db-data:

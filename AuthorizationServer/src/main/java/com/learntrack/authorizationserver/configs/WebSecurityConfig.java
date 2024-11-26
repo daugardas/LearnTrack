@@ -81,7 +81,8 @@ public class WebSecurityConfig {
                 // @formatter:off
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/assets/**", "/login", "/api/v1/auth/register", "/.well-known/**", "/favicon.ico", "/error").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
+                        .requestMatchers( "/login", "/auth/register", "/.well-known/**", "/favicon.ico", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider)
@@ -102,48 +103,48 @@ public class WebSecurityConfig {
     }
 
 
-    @Bean
-    public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
-        JdbcRegisteredClientRepository repository = new JdbcRegisteredClientRepository(jdbcTemplate);
+    // @Bean
+    // public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
+    //     JdbcRegisteredClientRepository repository = new JdbcRegisteredClientRepository(jdbcTemplate);
 
-        if (repository.findByClientId("learntrack") == null) {
-            // @formatter:off
-            RegisteredClient oidcClient = RegisteredClient
-            .withId(
-                    UUID
-                            .randomUUID()
-                            .toString()
-            )
-            .clientId("learntrack")
-            .clientSecret("{noop}secret")
-            .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-            .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-            .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-            .redirectUri("https://oauth.pstmn.io/v1/callback")
-            .postLogoutRedirectUri("http://127.0.0.1:8080/login")
-            .scope(OidcScopes.OPENID)
-            .scope(OidcScopes.PROFILE)
-            .scope("read")
-            .scope("write")
-            .clientSettings(
-                ClientSettings.builder()
-                .requireAuthorizationConsent(true).build()
-                )
-            .tokenSettings(
-                TokenSettings.builder()
-                    .accessTokenTimeToLive(Duration.ofDays(10))
-                    .refreshTokenTimeToLive(Duration.ofDays(30))
-                    .reuseRefreshTokens(true).build()
-                )
-            .build();
+    //     if (repository.findByClientId("learntrack") == null) {
+    //         // @formatter:off
+    //         RegisteredClient oidcClient = RegisteredClient
+    //         .withId(
+    //                 UUID
+    //                         .randomUUID()
+    //                         .toString()
+    //         )
+    //         .clientId("learntrack")
+    //         .clientSecret("{noop}secret")
+    //         .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+    //         .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+    //         .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+    //         .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+    //         .redirectUri("https://oauth.pstmn.io/v1/callback")
+    //         .postLogoutRedirectUri("http://127.0.0.1:8080/login")
+    //         .scope(OidcScopes.OPENID)
+    //         .scope(OidcScopes.PROFILE)
+    //         .scope("read")
+    //         .scope("write")
+    //         .clientSettings(
+    //             ClientSettings.builder()
+    //             .requireAuthorizationConsent(true).build()
+    //             )
+    //         .tokenSettings(
+    //             TokenSettings.builder()
+    //                 .accessTokenTimeToLive(Duration.ofDays(10))
+    //                 .refreshTokenTimeToLive(Duration.ofDays(30))
+    //                 .reuseRefreshTokens(true).build()
+    //             )
+    //         .build();
             
-            // @formatter:on
-            repository.save(oidcClient);
-        }
+    //         // @formatter:on
+    //         repository.save(oidcClient);
+    //     }
 
-        return repository;
-    }
+    //     return repository;
+    // }
 
 
     @Bean

@@ -1,0 +1,48 @@
+services:
+  nginx-reverse-proxy:
+    image: nginx:latest
+    ports:
+      - 8081:80
+      - 8443:443
+  
+  auth-server:
+    build:
+      target: development
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - DEBUG=true
+    volumes:
+      - ./AuthorizationServer:/app # mount the source code to the container for hot reload
+      - ~/.m2:/root/.m2 # mount the local Maven cache to the container
+    ports:
+      - 9000:9000
+
+  auth-server-db:
+    ports:
+      - 5432:5432
+
+  resource-server:
+    build:
+      target: development
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    volumes:
+      - ./ResourceServer:/app # mount the source code to the container for hot reload
+      - ~/.m2:/root/.m2 # mount the local Maven cache to the container
+    ports:
+      - 8080:8080
+
+  resource-server-db:
+    ports:
+      - 5433:5432
+
+  client-server:
+    build:
+      target: development
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    volumes:
+      - ./ClientServer:/app # mount the source code to the container for hot reload
+      - ~/.m2:/root/.m2 # mount the local Maven cache to the container
+    ports:
+      - 8082:8082

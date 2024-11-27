@@ -8,6 +8,6 @@ RUN ./mvnw clean install -DskipTests
 
 FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /opt/app
-EXPOSE 8081
+EXPOSE 9003
 COPY --from=builder /opt/app/target/*.jar /opt/app/*.jar
 ENTRYPOINT ["java","-Dspring.profiles.active=prod", "-jar", "/opt/app/*.jar" ]

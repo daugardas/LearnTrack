@@ -14,6 +14,7 @@ public class ReviewConverter {
         reviewResponseDTO.setTitle(review.getTitle());
         reviewResponseDTO.setContent(review.getContent());
         reviewResponseDTO.setLessonId(review.getLesson().getId());
+        reviewResponseDTO.setCreatorId(review.getOwnerId());
         return reviewResponseDTO;
     }
 

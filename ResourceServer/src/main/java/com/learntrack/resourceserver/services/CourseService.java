@@ -37,4 +37,8 @@ public class CourseService {
     public Optional<Course> findByIdAndOwnerId(Long id, Long ownerId) {
         return courseRepository.findByIdAndOwnerId(id, ownerId);
     }
+
+    public long count() {
+        return courseRepository.count();
+    }
 }

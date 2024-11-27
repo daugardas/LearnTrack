@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="https://www.thymeleaf.org"
+  th:replace="~{layout :: html}"
+>
+  <head>
+    <title>Lessons</title>
+  </head>
+  <body>
+    <div id="pageTitle">Course Lessons</div>
+
+    <div id="content">
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Course Lessons</h2>
+            <button
+              th:if="${canManageLessons}"
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#createLessonModal"
+            >
+              <i class="fas fa-plus me-2"></i>Add Lesson
+            </button>
+          </div>
+
+          <div class="row g-4">
+            <div class="col-md-4" th:each="lesson : ${lessons}">
+              <div class="card h-100" th:data-lesson-id="${lesson.id}">
+                <a th:href="@{/courses/{courseId}/lessons/{lessonId}(courseId=${courseId},lessonId=${lesson.id})}" 
+                   class="text-decoration-none text-dark">
+                  <div class="card-body">
+                    <h5 class="card-title" th:text="${lesson.title}">
+                      Lesson Title
+                    </h5>
+                    <p class="card-text" th:text="${lesson.description}">
+                      Lesson Description
+                    </p>
+                  </div>
+                </a>
+                <div
+                  class="card-footer bg-transparent border-0 d-flex justify-content-between"
+                >
+                  <button
+                    th:if="${canManageLessons}"
+                    class="btn btn-danger"
+                    th:onclick="deleteLesson([[${courseId}]], [[${lesson.id}]])"
+                  >
+                    <i class="fas fa-trash me-2"></i>Delete
+                  </button>
+                  <button
+                    th:if="${canManageLessons}"
+                    class="btn btn-primary"
+                    th:onclick="editLesson([[${courseId}]], [[${lesson.id}]])"
+                  >
+                    <i class="fas fa-edit me-2"></i>Edit
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Create Lesson Modal -->
+      <div class="modal fade" id="createLessonModal" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Create New Lesson</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <form
+                th:id="createLessonForm"
+                th:action="@{/courses/{courseId}/lessons(courseId=${courseId})}"
+                method="post"
+              >
+                <div class="mb-3">
+                  <label for="lessonTitle" class="form-label"
+                    >Lesson Title</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="lessonTitle"
+                    name="title"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="lessonContent" class="form-label"
+                    >Description</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="lessonContent"
+                    name="description"
+                    rows="4"
+                    required
+                  ></textarea>
+                </div>
+                <div class="text-end">
+                  <button
+                    type="button"
+                    class="btn btn-secondary me-2"
+                    data-bs-dismiss="modal"
+                  >
+                    Cancel
+                  </button>
+                  <button type="submit" class="btn btn-primary">
+                    Create Lesson
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit Lesson Modal -->
+      <div class="modal fade" id="editLessonModal" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit Lesson</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <form id="editLessonForm" method="post">
+                <div class="mb-3">
+                  <label for="editLessonTitle" class="form-label"
+                    >Lesson Title</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editLessonTitle"
+                    name="title"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="editLessonDescription" class="form-label"
+                    >Description</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="editLessonDescription"
+                    name="description"
+                    rows="4"
+                    required
+                  ></textarea>
+                </div>
+                <div class="text-end">
+                  <button
+                    type="button"
+                    class="btn btn-secondary me-2"
+                    data-bs-dismiss="modal"
+                  >
+                    Cancel
+                  </button>
+                  <button type="submit" class="btn btn-primary">
+                    Update Lesson
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

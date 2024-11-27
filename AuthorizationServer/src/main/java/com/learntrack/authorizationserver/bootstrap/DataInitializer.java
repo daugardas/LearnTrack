@@ -2,12 +2,14 @@ package com.learntrack.authorizationserver.bootstrap;
 
 import com.learntrack.authorizationserver.models.Authority;
 import com.learntrack.authorizationserver.models.Role;
+import com.learntrack.authorizationserver.models.User;
 import com.learntrack.authorizationserver.repositories.AuthorityRepository;
 import com.learntrack.authorizationserver.repositories.RoleRepository;
 import com.learntrack.authorizationserver.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,11 +22,13 @@ public class DataInitializer implements CommandLineRunner {
     private final AuthorityRepository authorityRepository;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public DataInitializer(AuthorityRepository authorityRepository, RoleRepository roleRepository, UserRepository userRepository) {
+    public DataInitializer(AuthorityRepository authorityRepository, RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.authorityRepository = authorityRepository;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -53,6 +57,25 @@ public class DataInitializer implements CommandLineRunner {
         roleRepository.save(userRole);
         roleRepository.save(lecturerRole);
         roleRepository.save(adminRole);
+
+        // create default users if they don't exist
+        if(!userRepository.existsByUsername("admin")) {
+            User adminUser = new User("admin", passwordEncoder.encode("password"));
+            adminUser.addRole(adminRole);
+            userRepository.save(adminUser);
+        }
+
+        if(!userRepository.existsByUsername("user")) {
+            User userUser = new User("user", passwordEncoder.encode("password"));
+            userUser.addRole(userRole);
+            userRepository.save(userUser);
+        }
+
+        if(!userRepository.existsByUsername("lecturer")) {
+            User lecturerUser = new User("lecturer", passwordEncoder.encode("password"));
+            lecturerUser.addRole(lecturerRole);
+            userRepository.save(lecturerUser);
+        }
 
         logger.info("Data initialized.");
     }

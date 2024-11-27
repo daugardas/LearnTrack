@@ -81,7 +81,7 @@ public class WebSecurityConfig {
                 // @formatter:off
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/assets/**", "/login", "/api/v1/auth/register", "/.well-known/**", "/favicon.ico", "/error").permitAll()
+                        .requestMatchers("/assets/**", "/login", "/auth/register", "/.well-known/**", "/favicon.ico", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider)
@@ -109,19 +109,14 @@ public class WebSecurityConfig {
         if (repository.findByClientId("learntrack") == null) {
             // @formatter:off
             RegisteredClient oidcClient = RegisteredClient
-            .withId(
-                    UUID
-                            .randomUUID()
-                            .toString()
-            )
+            .withId(UUID.randomUUID().toString())
             .clientId("learntrack")
             .clientSecret("{noop}secret")
             .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
             .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-            .redirectUri("https://oauth.pstmn.io/v1/callback")
-            .postLogoutRedirectUri("http://127.0.0.1:8080/login")
+            .redirectUri("http://127.0.0.1:8082/login/oauth2/code/learntrack")
             .scope(OidcScopes.OPENID)
             .scope(OidcScopes.PROFILE)
             .scope("read")

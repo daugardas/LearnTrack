@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{layout :: html}">
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <div id="pageTitle">Home</div>
+    
+    <div id="content">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title mb-4">Welcome to LearnTrack</h2>
+                        <p class="lead">Your personalized learning journey starts here.</p>
+                        
+                        <div class="mt-4">
+                            <h5>Quick Stats</h5>
+                            <div class="row g-4 mt-2">
+                                <div class="col-md-4">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-book-open fa-2x mb-2 text-primary"></i>
+                                            <h3 class="card-title" th:text="${courseCount}">0</h3>
+                                            <p class="card-text">Available Courses</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-graduation-cap fa-2x mb-2 text-success"></i>
+                                            <h3 class="card-title" th:text="${enrolledCount}">0</h3>
+                                            <p class="card-text">Enrolled Courses</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-certificate fa-2x mb-2 text-warning"></i>
+                                            <h3 class="card-title" th:text="${certificateCount}">0</h3>
+                                            <p class="card-text">Certificates</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <a href="/courses" class="btn btn-primary btn-lg">
+                                <i class="fas fa-book me-2"></i>Browse Courses
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

@@ -221,12 +221,12 @@ public class ReviewController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } else {
             logger.info("Principal '{}' is trying to create a new review for lesson with id: " + lessonId, userId);
-            Jwt jwt = (Jwt) authentication.getPrincipal();
-            @SuppressWarnings("unchecked") List<String> roles = (List<String>) jwt.getClaims().get("roles");
-            if (!roles.contains("ROLE_LECTURER") && !roles.contains("ROLE_ADMIN")) {
-                logger.info("Principal '{}' is not an admin or lecturer", userId);
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            }
+            // Jwt jwt = (Jwt) authentication.getPrincipal();
+            // @SuppressWarnings("unchecked") List<String> roles = (List<String>) jwt.getClaims().get("roles");
+            // if (!roles.contains("ROLE_LECTURER") && !roles.contains("ROLE_ADMIN")) {
+            //     logger.info("Principal '{}' is not an admin or lecturer", userId);
+            //     return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            // }
         }
 
         logger.info("Creating review for lesson with id: " + lessonId);
@@ -239,10 +239,10 @@ public class ReviewController {
 
         Course course = courseOptional.get();
 
-        if (!course.getOwnerId().equals(userId)) {
-            logger.info("Principal '{}' is not the owner of the course '{}'", userId, courseId);
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
+        // if (!course.getOwnerId().equals(userId)) {
+        //     logger.info("Principal '{}' is not the owner of the course '{}'", userId, courseId);
+        //     return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        // }
 
         Optional<Lesson> lessonOptional = lessonService.findById(lessonId);
         if (!lessonOptional.isPresent()) {
@@ -309,12 +309,6 @@ public class ReviewController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } else {
             logger.info("Principal '{}' is trying to update review with id: " + reviewId + " for lesson with id: " + lessonId, userId);
-            Jwt jwt = (Jwt) authentication.getPrincipal();
-            @SuppressWarnings("unchecked") List<String> roles = (List<String>) jwt.getClaims().get("roles");
-            if (!roles.contains("ROLE_LECTURER") && !roles.contains("ROLE_ADMIN")) {
-                logger.info("Principal '{}' is not an admin or lecturer", userId);
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            }
         }
 
         logger.debug("Updating review with id: " + reviewId + " for lesson with id: " + lessonId);
@@ -326,11 +320,6 @@ public class ReviewController {
         }
 
         Course course = courseOptional.get();
-
-        if (!course.getOwnerId().equals(userId)) {
-            logger.info("Principal '{}' is not the owner of the course '{}'", userId, courseId);
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
 
         Optional<Lesson> lessonOptional = lessonService.findById(lessonId);
         if (!lessonOptional.isPresent()) {
@@ -356,6 +345,12 @@ public class ReviewController {
             logger.error("Review with id: " + reviewId + " not found for lesson with id: " + lessonId);
             throw new ResourceNotFoundException("Review with id: " + reviewId + " not found for lesson with id: " + lessonId);
         }
+
+        // check if the user is the creator of the review
+        if (!reviewToUpdate.getOwnerId().equals(userId)) {
+            logger.info("Principal '{}' is not the creator of the review '{}'", userId, reviewId);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }   
 
         if (review.getTitle() != null) reviewToUpdate.setTitle(review.getTitle());
 
@@ -396,12 +391,6 @@ public class ReviewController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } else {
             logger.info("Principal '{}' is trying to delete review with id: " + reviewId + " for lesson with id: " + lessonId, userId);
-            Jwt jwt = (Jwt) authentication.getPrincipal();
-            @SuppressWarnings("unchecked") List<String> roles = (List<String>) jwt.getClaims().get("roles");
-            if (!roles.contains("ROLE_LECTURER") && !roles.contains("ROLE_ADMIN")) {
-                logger.info("Principal '{}' is not an admin or lecturer", userId);
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            }
         }
         logger.debug("Deleting review with id: " + reviewId);
 
@@ -413,20 +402,23 @@ public class ReviewController {
 
         Course course = courseOptional.get();
 
-        if (!course.getOwnerId().equals(userId)) {
-            logger.info("Principal '{}' is not the owner of the course '{}'", userId, courseId);
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
 
         if (!lessonService.existsById(lessonId)) {
             logger.error("Lesson with id: " + lessonId + " not found");
             throw new ResourceNotFoundException("Lesson with id: " + lessonId + " not found");
         }
 
-        if (!reviewService.existsById(reviewId)) {
+        Optional<Review> reviewOptional = reviewService.findById(reviewId);
+        if (!reviewOptional.isPresent()) {
             logger.error("Review with id: " + reviewId + " not found");
             throw new ResourceNotFoundException("Review with id: " + reviewId + " not found");
         }
+
+        // check if the user is the creator of the review
+        if (!reviewOptional.get().getOwnerId().equals(userId)) {
+            logger.info("Principal '{}' is not the creator of the review '{}'", userId, reviewId);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }   
 
         reviewService.deleteById(reviewId);
         return ResponseEntity.noContent().build();

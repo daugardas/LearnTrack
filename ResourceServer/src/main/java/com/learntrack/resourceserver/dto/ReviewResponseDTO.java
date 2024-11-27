@@ -5,15 +5,17 @@ public class ReviewResponseDTO {
     private String title;
     private String content;
     private Long lessonId;
+    private Long creatorId;
 
     public ReviewResponseDTO() {
     }
 
-    public ReviewResponseDTO(Long id, String title, String content, Long lessonId) {
+    public ReviewResponseDTO(Long id, String title, String content, Long lessonId, Long creatorId) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.lessonId = lessonId;
+        this.creatorId = creatorId;
     }
 
     public Long getId() {
@@ -46,5 +48,13 @@ public class ReviewResponseDTO {
 
     public void setLessonId(Long lessonId) {
         this.lessonId = lessonId;
+    }
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
     }
 }

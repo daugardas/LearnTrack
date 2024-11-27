@@ -16,16 +16,14 @@ public class CustomJwtTokenCustomizer implements OAuth2TokenCustomizer<JwtEncodi
 
     @Override
     public void customize(JwtEncodingContext context) {
-        if (context.getTokenType().equals(OAuth2TokenType.ACCESS_TOKEN)) {
-            Authentication principal = context.getPrincipal();
-
-            var identity = principal.getPrincipal();
-            if (identity instanceof User user) {
-                context.getClaims().claim("user_id", user.getId());
-                context.getClaims().claim("roles", user.getRoleNames());
-            } else {
-                logger.error("Principal is not an instance of User: {}", identity);
-            }
+        Authentication principal = context.getPrincipal();
+        var identity = principal.getPrincipal();
+        
+        if (identity instanceof User user) {
+            context.getClaims().claim("user_id", user.getId());
+            context.getClaims().claim("roles", user.getRoleNames());
+        } else {
+            logger.error("Principal is not an instance of User: {}", identity);
         }
     }
 

@@ -3,6 +3,7 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/AuthorizationServer" />
+    <file type="web" url="file://$PROJECT_DIR$/ClientServer" />
     <file type="web" url="file://$PROJECT_DIR$/ResourceServer" />
   </component>
   <component name="MavenProjectsManager">
@@ -11,6 +12,7 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/ResourceServer/pom.xml" />
         <option value="$PROJECT_DIR$/AuthorizationServer/pom.xml" />
+        <option value="$PROJECT_DIR$/ClientServer/pom.xml" />
       </list>
     </option>
   </component>

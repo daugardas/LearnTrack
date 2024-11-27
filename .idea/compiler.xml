@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="ResourceServer" />
         <module name="AuthorizationServer" />
+        <module name="ClientServer" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -17,6 +18,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="AuthorizationServer" options="-parameters" />
+      <module name="ClientServer" options="-parameters" />
       <module name="ResourceServer" options="-parameters" />
       <module name="server" options="-parameters" />
     </option>

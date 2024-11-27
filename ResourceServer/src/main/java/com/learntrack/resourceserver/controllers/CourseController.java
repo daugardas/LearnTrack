@@ -46,7 +46,6 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-
     @Operation(summary = "Find all courses")
     // @formatter:off
     @ApiResponses(
@@ -66,7 +65,7 @@ public class CourseController {
     // @formatter:on
     @GetMapping
     public ResponseEntity<Iterable<CourseResponseDTO>> findAll(
-            // @formatter:off
+    // @formatter:off
         @CurrentSecurityContext(expression = "authentication") Authentication authentication
         // @formatter:on
     ) {
@@ -102,7 +101,7 @@ public class CourseController {
     // @formatter:on
     @GetMapping("/{requestedId}")
     public ResponseEntity<CourseResponseDTO> findById(
-            // @formatter:off
+    // @formatter:off
         @CurrentSecurityContext(expression = "authentication") Authentication authentication,
         @Parameter(description = "id of a course to be searched") @PathVariable Long requestedId
         // @formatter:on
@@ -148,7 +147,7 @@ public class CourseController {
     // @formatter:on
     @PostMapping
     public ResponseEntity<CourseResponseDTO> create(
-            // @formatter:off
+    // @formatter:off
         @io.swagger.v3.oas.annotations.parameters.RequestBody(
             required = true, 
             description = "Course to create", 
@@ -180,7 +179,8 @@ public class CourseController {
         } else {
             logger.info("Principal '{}' is trying to create a new course '{}'", userId, course);
             Jwt jwt = (Jwt) authentication.getPrincipal();
-            @SuppressWarnings("unchecked") List<String> roles = (List<String>) jwt.getClaims().get("roles");
+            @SuppressWarnings("unchecked")
+            List<String> roles = (List<String>) jwt.getClaims().get("roles");
             if (!roles.contains("ROLE_LECTURER") && !roles.contains("ROLE_ADMIN")) {
                 logger.info("Principal '{}' is not an admin or lecturer", userId);
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -218,7 +218,7 @@ public class CourseController {
     // @formatter:on
     @PutMapping("/{requestedId}")
     public ResponseEntity<CourseResponseDTO> updateById(
-            // @formatter:off
+    // @formatter:off
         @Parameter(description = "id of a course to be updated") 
         @PathVariable Long requestedId, 
         @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -240,7 +240,8 @@ public class CourseController {
         } else {
             logger.info("Principal '{}' is trying to update course '{}'", userId, requestedId);
             Jwt jwt = (Jwt) authentication.getPrincipal();
-            @SuppressWarnings("unchecked") List<String> roles = (List<String>) jwt.getClaims().get("roles");
+            @SuppressWarnings("unchecked")
+            List<String> roles = (List<String>) jwt.getClaims().get("roles");
             if (!roles.contains("ROLE_LECTURER") && !roles.contains("ROLE_ADMIN")) {
                 logger.info("Principal '{}' is not an admin or lecturer", userId);
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -260,9 +261,11 @@ public class CourseController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        if (course.getName() != null) courseToUpdate.setName(course.getName());
+        if (course.getName() != null)
+            courseToUpdate.setName(course.getName());
 
-        if (course.getDescription() != null) courseToUpdate.setDescription(course.getDescription());
+        if (course.getDescription() != null)
+            courseToUpdate.setDescription(course.getDescription());
         Course updatedCourse = courseService.save(courseToUpdate);
 
         logger.info("Course updated: '{}'", updatedCourse);
@@ -290,7 +293,7 @@ public class CourseController {
     // @formatter:on
     @DeleteMapping("/{requestedId}")
     public ResponseEntity<Void> deleteById(
-            // @formatter:off
+    // @formatter:off
         @Parameter(description = "id of a course to be deleted") @PathVariable Long requestedId,
         @CurrentSecurityContext(expression = "authentication") Authentication authentication
         // @formatter:on
@@ -302,7 +305,8 @@ public class CourseController {
         } else {
             logger.info("Principal '{}' is trying to delete course '{}'", userId, requestedId);
             Jwt jwt = (Jwt) authentication.getPrincipal();
-            @SuppressWarnings("unchecked") List<String> roles = (List<String>) jwt.getClaims().get("roles");
+            @SuppressWarnings("unchecked")
+            List<String> roles = (List<String>) jwt.getClaims().get("roles");
             if (!roles.contains("ROLE_LECTURER") && !roles.contains("ROLE_ADMIN")) {
                 logger.info("Principal '{}' is not an admin or lecturer", userId);
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -324,5 +328,11 @@ public class CourseController {
         courseService.deleteById(requestedId);
         logger.info("Course '{}' deleted", requestedId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getCourseCount() {
+        long count = courseService.count();
+        return ResponseEntity.ok(count);
     }
 }

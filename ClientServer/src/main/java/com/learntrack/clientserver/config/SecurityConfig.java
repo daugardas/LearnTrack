@@ -40,7 +40,7 @@ public class SecurityConfig {
         return (exchange, authentication) -> {
             // Redirect to the authorization server's /logout endpoint
             exchange.getExchange().getResponse().setStatusCode(HttpStatus.FOUND);
-            exchange.getExchange().getResponse().getHeaders().setLocation(URI.create("http://localhost:9000/logout"));
+            exchange.getExchange().getResponse().getHeaders().setLocation(URI.create("https://learntrack-auth-server-frkaa.ondigitalocean.app/logout"));
             return Mono.empty();
         };
     }

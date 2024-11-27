@@ -31,7 +31,7 @@ public class HomeController {
         
         Mono<Long> courseCountMono = webClient
             .get()
-            .uri("http://localhost:8080/api/v1/courses/count")
+            .uri("/api/v1/courses/count")
             .headers(headers -> headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue()))
             .retrieve()
             .bodyToMono(Long.class);

@@ -34,9 +34,7 @@ public class LessonController {
     private final Logger logger = LoggerFactory.getLogger(LessonController.class);
 
     public LessonController(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder
-                .baseUrl("http://localhost:8080")
-                .build();
+        this.webClient = webClientBuilder.build();
     }
 
     private boolean hasRequiredRole(OidcUser user) {

@@ -26,9 +26,7 @@ public class CourseController {
     private final Logger logger = LoggerFactory.getLogger(CourseController.class);
 
     public CourseController(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder
-                .baseUrl("http://localhost:8080")
-                .build();
+        this.webClient = webClientBuilder.build();
     }
 
     private boolean hasRequiredRole(Authentication authentication) {

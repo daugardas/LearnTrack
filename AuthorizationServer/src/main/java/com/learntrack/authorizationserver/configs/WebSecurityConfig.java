@@ -116,7 +116,7 @@ public class WebSecurityConfig {
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
             .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-            .redirectUri("http://127.0.0.1:8082/login/oauth2/code/learntrack")
+            .redirectUri("https://learntrack-client-server-kl7xk.ondigitalocean.app/login/oauth2/code/learntrack")
             .scope(OidcScopes.OPENID)
             .scope(OidcScopes.PROFILE)
             .scope("read")

@@ -1,0 +1,776 @@
+---
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: Lesson
+  description: Endpoints for managing lesson information
+- name: Course
+  description: Endpoints for managing course information
+- name: Review
+  description: Endpoints for managing review information
+paths:
+  "/api/v1/courses/{requestedId}":
+    get:
+      tags:
+      - Course
+      summary: Find course by id
+      operationId: findById
+      parameters:
+      - name: requestedId
+        in: path
+        description: id of a course to be searched
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Successfully retrieved course
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CourseResponseDTO"
+        '400':
+          description: Bad Request
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '404':
+          description: Course not found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+    put:
+      tags:
+      - Course
+      summary: Update a course by id
+      operationId: updateById
+      parameters:
+      - name: requestedId
+        in: path
+        description: id of a course to be updated
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Course to update
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CourseRequestDTO"
+        required: true
+      responses:
+        '200':
+          description: Course successfully updated
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CourseResponseDTO"
+        '400':
+          description: Invalid input
+          content: {}
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Course not found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+    delete:
+      tags:
+      - Course
+      summary: Delete a course by id
+      operationId: deleteById
+      parameters:
+      - name: requestedId
+        in: path
+        description: id of a course to be deleted
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '204':
+          description: Course successfully deleted
+        '400':
+          description: Bad Request
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Course not found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  "/api/v1/courses/{courseId}/lessons/{lessonId}":
+    get:
+      tags:
+      - Lesson
+      summary: Find lesson by id
+      operationId: findById_1
+      parameters:
+      - name: courseId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: lessonId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Successfully retrieved lesson
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LessonResponseDTO"
+        '400':
+          description: Bad Request
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '404':
+          description: Lesson not found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+    put:
+      tags:
+      - Lesson
+      summary: Update a lesson by id
+      operationId: update
+      parameters:
+      - name: courseId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: lessonId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Lesson to update
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LessonRequestDTO"
+        required: true
+      responses:
+        '200':
+          description: Lesson successfully updated
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LessonResponseDTO"
+        '400':
+          description: Invalid input
+          content: {}
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Lesson not found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+    delete:
+      tags:
+      - Lesson
+      summary: Delete a lesson by id
+      operationId: delete
+      parameters:
+      - name: courseId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: lessonId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '204':
+          description: Lesson successfully deleted
+        '400':
+          description: Bad Request
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Lesson not found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  "/api/v1/courses/{courseId}/lessons/{lessonId}/reviews/{reviewId}":
+    get:
+      tags:
+      - Review
+      summary: Find review by id
+      operationId: findById_2
+      parameters:
+      - name: courseId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: lessonId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: reviewId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Successfully retrieved review
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ReviewResponseDTO"
+        '400':
+          description: Bad Request
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '404':
+          description: Lesson not found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+    put:
+      tags:
+      - Review
+      summary: Update a review by id
+      operationId: update_1
+      parameters:
+      - name: courseId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: lessonId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: reviewId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Review to update
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ReviewRequestDTO"
+        required: true
+      responses:
+        '200':
+          description: Review successfully updated
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ReviewResponseDTO"
+        '400':
+          description: Invalid input
+          content: {}
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Lesson not found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+    delete:
+      tags:
+      - Review
+      summary: Delete a review by id
+      operationId: delete_1
+      parameters:
+      - name: courseId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: lessonId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: reviewId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '204':
+          description: Review successfully deleted
+        '400':
+          description: Bad Request
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Lesson not found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  "/api/v1/courses":
+    get:
+      tags:
+      - Course
+      summary: Find all courses
+      operationId: findAll
+      responses:
+        '200':
+          description: Successfully retrieved list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/CourseResponseDTO"
+        '400':
+          description: Bad Request
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '404':
+          description: Not Found
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '500':
+          description: Internal Server Error
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+    post:
+      tags:
+      - Course
+      summary: Create a new course
+      operationId: create
+      requestBody:
+        description: Course to create
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CourseRequestDTO"
+            examples:
+              An example request with name and description:
+                description: An example request with name and description
+                value:
+                  name: New course
+                  description: Course description
+              An example request with only required fields:
+                description: An example request with only required fields
+                value:
+                  name: Another course
+        required: true
+      responses:
+        '201':
+          description: Course successfully created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CourseResponseDTO"
+        '400':
+          description: Invalid input
+          content: {}
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '500':
+          description: Internal Server Error
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  "/api/v1/courses/{courseId}/lessons":
+    get:
+      tags:
+      - Lesson
+      summary: Find all lessons for a course
+      operationId: findAll_1
+      parameters:
+      - name: courseId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Successfully retrieved list of lessons
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/LessonResponseDTO"
+        '400':
+          description: Bad Request
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '404':
+          description: Course not found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+    post:
+      tags:
+      - Lesson
+      summary: Create a new lesson for a course
+      operationId: create_1
+      parameters:
+      - name: courseId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Lesson to create
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LessonRequestDTO"
+        required: true
+      responses:
+        '201':
+          description: Successfully created lesson
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LessonResponseDTO"
+        '400':
+          description: Invalid input
+          content: {}
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Course not found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  "/api/v1/courses/{courseId}/lessons/{lessonId}/reviews":
+    get:
+      tags:
+      - Review
+      summary: Find all reviews for a lesson
+      operationId: findAll_2
+      parameters:
+      - name: courseId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: lessonId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Successfully retrieved list of reviews
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ReviewResponseDTO"
+        '400':
+          description: Bad Request
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '404':
+          description: Lesson not found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+    post:
+      tags:
+      - Review
+      summary: Create a new review for a lesson
+      operationId: create_2
+      parameters:
+      - name: courseId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: lessonId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Review to create
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ReviewRequestDTO"
+        required: true
+      responses:
+        '201':
+          description: Successfully created review
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ReviewResponseDTO"
+        '400':
+          description: Invalid input
+          content: {}
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Lesson not found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+components:
+  schemas:
+    CourseRequestDTO:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    CourseResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+    LessonRequestDTO:
+      required:
+      - description
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+    LessonResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        description:
+          type: string
+        courseId:
+          type: integer
+          format: int64
+    ReviewRequestDTO:
+      required:
+      - content
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+    ReviewResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        content:
+          type: string
+        lessonId:
+          type: integer
+          format: int64

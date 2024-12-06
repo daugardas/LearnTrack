@@ -1,6 +1,8 @@
+Project created for KTU "T120B165 Saityno taikomųjų programų projektavimas" module
+
 # LearnTrack
 
-LearnTrack is a simple yet powerful system designed for managing courses, lessons, and reviews. It provides a user-friendly interface for lecturers, students, and administrators to interact with educational content effectively.
+LearnTrack is a simple system designed for managing courses, lessons, and reviews. It provides a user-friendly interface for lecturers, students, and administrators to interact with educational content effectively.
 
 ## Overview
 
